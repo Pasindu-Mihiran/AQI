@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href='https://fonts.googleapis.com/css?family=Righteous' rel='stylesheet'>
+    <link href='https://fonts.googleapis.com/css?family=Montserrat Alternates' rel='stylesheet'>
+    <link rel="stylesheet" href=style.css">
+    <style>
+
+        body{
+    background-color: white;
+    color: black;
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+    align-items:center;
+    position: fixed;
+    right: 0;
+    left: 0;
+}
+#navbar{
+    height: 27px;
+    width: 100%;
+    /* overflow: hidden; */
+    position: static;
+    background-color: white;
+    text-align: center;
+    /* box-shadow: 0px 10px 0px 0px gray; */
+    font-family: 'Righteous';
+    font-size: 120%;
+}
+#content{
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row;
+    align-items:center;
+    height: 100%;
+    width: 100%;
+    font-family: 'Montserrat Alternates';font-size: 22px;
+    /* position: fixed;
+    margin-top:16%;
+    right: 0;
+    left: 0;
+    bottom: 1; */
+}
+#process{
+    width: 23%;
+    height:95vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    /* align-items:normal; */
+    bottom:10%;
+    position: static;
+    margin-right: 1%;
+    background-color: white;
+    padding: 0% 0% 0% 0.5%;
+}
+#user-selection{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items:normal;
+    margin-right: 2%;
+    margin-left: -2%;
+    /* margin-top: 5%; */
+    background-color: rgb(8, 8, 60);
+    color: white;
+    padding: 20% 3% 20% 3%;
+    border-radius:0% 0% 0% 20px;
+    /* border-radius: 5%; */
+}
+
+#result{
+    margin-top: 15%;
+    width: 100%;
+    font-size: 80%;
+}
+
+/* #result{
+    width: 100%;
+    height: 50%;
+    margin-top: 5%;
+    margin-bottom: 5%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items:normal;
+    margin-right: 2%;
+    margin-left: -2%;
+    background-color: rgb(8, 8, 60);
+    border-radius: 5%;
+    padding: 10% 3% 10% 3%;
+    align-items:center;
+    color: white;
+} */
+#city{
+    width: 100%;
+    /* margin-top: 15%; */
+    background-color: rgb(40, 40, 74);
+    color: aliceblue;
+    padding: 5% 0% 5% 5%;
+    border-radius: 10px;
+    top:0;
+    border: none;
+    font-size: 90%;
+    outline: none;
+}
+#timestamp{
+    width: 95%;
+    margin-top: 7%;
+    background-color: rgb(40, 40, 74);
+    color: aliceblue;
+    padding: 5% 0% 5% 5%;
+    border-radius: 10px;
+    border: none;
+    font-size: 90%;
+    outline: none;
+    color-scheme: dark;
+}
+
+#submit{
+    border-radius: 20%;
+    height: 7vh;
+    margin-top: 7%;
+    width: 100%;
+    background-color: Orange;
+    /* padding: 0% 5% 10% %; */
+
+    font-size: 100%;
+    color: white;
+    border: 0;
+    font-weight:bold;
+    border-radius: 10px;
+}
+#map {
+    width: 75%;
+    height: 95%;
+    border-radius: 0% 0% 25px 0%;
+    position: fixed;
+    margin-left: 24%;
+}
+/* :root {
+--map-tiles-filter: brightness(0.6) invert(1) contrast(3) hue-rotate(200deg) saturate(0.3) brightness(0.7);
+}
+@media (prefers-color-scheme: dark) {
+    .map-tiles {
+     filter:var(--map-tiles-filter, none);
+}
+} */
+
+    </style>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.7.1/dist/leaflet.css">
+</head>
+<body>
+    
+    <nav id="navbar"> Air Quality Index Forecasting</nav>
+    <div id="content">
+    <div id = process>
+    <div id = user-selection>
+    <form id = "cities" action="{{url_for('index')}}" method="post" >
+        <!-- <label>Choose your Favorite city in India</label>   -->
+        <select name ="city" id="city">  
+            <option>Ahmedabad</option>  
+            <option>Aizawl</option>  
+            <option>Amaravati</option>  
+            <option>Amritsar</option>  
+            <option>Bengaluru</option>  
+            <option>Bhopal</option>  
+            <option>Brajrajnagar</option>  
+            <option>Chandigarh</option>  
+            <option>Chennai</option>
+            <option>Coimbatore</option>  
+            <option>Delhi</option>  
+            <option>Ernakulam</option>  
+            <option>Gurugram</option>  
+            <option>Guwahati</option>  
+            <option>Hyderabad</option>  
+            <option>Jaipur</option>  
+            <option>Jorapokhar</option>  
+            <option>Kochi</option>
+            <option>Kolkata</option>  
+            <option>Lucknow</option>  
+            <option>Mumbai</option>  
+            <option>Patna</option>  
+            <option>Shillong</option>  
+            <option>Talcher</option>  
+            <option>Thiruvananthapuram</option>  
+            <option>Visakhapatnam</option>       
+      </select>  
+        <input type="date" name="timestamp" placeholder="timestamp" id = "timestamp"></input>
+        <button type='submit' id = 'submit'>Submit</button>
+        <div id = "result">
+            
+        <h3>AQI &emsp; &emsp; &emsp; &emsp; &emsp;&emsp; &nbsp;&nbsp;&nbsp; {{model_prediction}} </h3>    
+        <h3>NO2 &emsp; &emsp; &emsp; &emsp; &emsp;&emsp;&nbsp;&nbsp;&nbsp; {{NO2}}</h3>
+        <h3>NO &emsp; &emsp; &emsp; &emsp; &emsp;&emsp; &emsp;&nbsp; {{NO}}</h3>
+        <h3>NOX &emsp; &emsp; &emsp; &emsp; &emsp;&emsp; &emsp;{{NOX}}</h3>
+        <h3>PM25 &emsp; &emsp; &emsp; &emsp; &emsp; &emsp;  {{PM25}}</h3>
+        <h3>SO2 &emsp; &emsp; &emsp; &emsp; &emsp; &emsp;&emsp;  {{SO2}}</h3>
+        <h3>CO &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &nbsp; &nbsp;&nbsp;    {{CO}}</h3>
+        </div>
+    </form>
+    </div>
+    <!-- <div id = "result">
+        <h3>{{model_prediction}}</h3>
+    </div> -->
+    </div>
+    <div id="map"></div>
+
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/leaflet@1.7.1/dist/leaflet.js"></script>
+    
+    <script>
+       
+        var map = L.map('map').setView([0, 0], 2);
+
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+          attribution: 'Map data © OpenStreetMap contributors',
+          className: 'map-tiles' 
+        }).addTo(map);
+
+        var city = '{{city}}';
+        locateCity(city);
+        function locateCity(city){ 
+       
+          // Perform geocoding or use an API to get the latitude and longitude of the city
+          // Replace the following code with your own implementation
+       
+           // Get coordinates for the selected city (you can use a geocoding API for this)
+        
+            if (city === "Ahmedabad") {
+                coordinates = [23.033863, 72.585022];
+            } else if (city === "Aizawl") {
+                coordinates = [23.727106, 92.717636];
+            } else if (city === "Amaravati") {
+                coordinates = [20.937424, 77.779549];
+            } else if (city === "Bengaluru") {
+                coordinates = [12.972442, 77.580643];
+            } else if (city === "Bhopal") {
+                coordinates = [23.259933, 77.412613];
+            } else if (city === "Brajrajnagar") {
+                coordinates = [21.8285935, 83.9214896];
+            } else if (city === "Chandigarh") {
+                coordinates = [30.741482, 76.7794];
+            }else if (city === "Chennai") {
+                coordinates = [13.0827, 80.2707];
+            } else if (city === "Coimbatore") {
+                coordinates = [11.0168, 76.9558];
+            } else if (city === "Delhi") {
+                coordinates = [28.7041, 77.1025];
+            } else if (city === "Ernakulam") {
+                coordinates = [9.9816,76.2999];
+            } else if (city === "Gurugram") {
+                coordinates = [28.4595, 77.0266];
+            } else if (city === "Guwahati") {
+                coordinates = [26.1158, 91.7086];
+            }else if (city === "Hyderabad") {
+                coordinates = [17.3850, 78.4867];
+            } else if (city === "Jaipur") {
+                coordinates = [26.9124, 75.7873];
+            } else if (city === "Jorapokhar") {
+                coordinates = [23.7041, 86.4137];
+            } else if (city === "Kochi") {
+                coordinates = [9.9312, 76.2673];
+            } else if (city === "Kolkata") {
+                coordinates = [22.5726, 88.3639];
+            } else if (city === "Lucknow") {
+                coordinates = [26.8467, 80.9462];
+            }else if (city === "Mumbai") {
+                coordinates = [19.0760, 72.8777];
+            } else if (city === "Patna") {
+                coordinates = [25.5941, 85.1376];
+            } else if (city === "Shillong") {
+                coordinates = [25.5788, 91.8933];
+            } else if (city === "Talcher") {
+                coordinates = [20.9501, 85.2168];
+            } else if (city === "Thiruvananthapuram") {
+                coordinates = [8.5241, 76.9366];
+            } else if (city === "Visakhapatnam") {
+                coordinates = [17.6868, 83.2185];
+            }
+          // Set the map view to the city's coordinates and add a marker
+          map.setView(coordinates, 10);
+          L.marker(coordinates).addTo(map);
+        }
+      </script>
+
+    
+   
+    
+
+</body>
+</html>
